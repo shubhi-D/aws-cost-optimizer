@@ -1,17 +1,19 @@
-import json
 from app.analyzers.idle_ec2_analyzer import find_idle_instances
+from app.services.ec2_service import stop_instances
+
 
 def main():
 
-    idle = find_idle_instances()
+    idle_instances = find_idle_instances()
 
-    print("\nIdle Instances Found:", len(idle))
+    print(f"\nIdle Instances Found: {len(idle_instances)}")
 
-    for i in idle:
-        print(i)
+    if not idle_instances:
+        return
 
-    with open("output/idle_instances.json", "w") as f:
-        json.dump(idle, f, indent=4)
+    instance_ids = [i["InstanceId"] for i in idle_instances]
+
+    stop_instances(instance_ids, dry_run=False)
 
 
 if __name__ == "__main__":
