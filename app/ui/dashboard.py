@@ -9,6 +9,12 @@ st.title("AWS Cost Optimizer")
 
 st.write("Detect and stop idle EC2 instances using CloudWatch metrics.")
 
+def safe_round(value, decimals=2):
+    """Safely round a value that might be None"""
+    if value is None:
+        return 0.0
+    return round(float(value), decimals)
+
 # scan button
 if st.button("Scan for Idle Instances"):
 
@@ -25,11 +31,11 @@ if st.button("Scan for Idle Instances"):
         for inst in idle_instances:
             table_data.append({
                 "Instance ID": inst["InstanceId"],
-                "CPU": round(inst.get("avg_cpu",0),2),
-                "Network In": round(inst.get("network_in",0),2),
-                "Network Out": round(inst.get("network_out",0),2 ),
-                "Disk Read": round(inst.get("disk_read_ops",0),2),
-                "Disk Write": round(inst.get("disk_write_ops",0),2),
+                "CPU": safe_round(inst.get("avg_cpu"), 2),
+                "Network In": safe_round(inst.get("network_in"), 2),
+                "Network Out": safe_round(inst.get("network_out"), 2),
+                "Disk Read": safe_round(inst.get("disk_read_ops"), 2),
+                "Disk Write": safe_round(inst.get("disk_write_ops"), 2),
             })
 
         st.table(table_data)

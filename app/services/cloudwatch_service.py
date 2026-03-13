@@ -1,10 +1,7 @@
 from datetime import datetime, timedelta
-from app.config.aws_config import get_cloudwatch_client
 
 
-def get_metric_average(instance_id, metric_name, statistic="Average"):
-
-    cw = get_cloudwatch_client()
+def get_metric_average(cw, instance_id, metric_name, statistic="Average"):
 
     end = datetime.utcnow()
     start = end - timedelta(minutes=15)
@@ -33,8 +30,9 @@ def get_metric_average(instance_id, metric_name, statistic="Average"):
     return avg_value
 
 
-def get_cpu_utilization(instance_id):
+def get_cpu_utilization(cw, instance_id):
     return get_metric_average(
+        cw,
         instance_id,
         "CPUUtilization",
         "Average"
