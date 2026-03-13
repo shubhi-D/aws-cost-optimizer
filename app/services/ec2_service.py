@@ -15,7 +15,8 @@ def get_running_instances():
         for instance in reservation["Instances"]:
             instances.append({
                 "InstanceId": instance["InstanceId"],
-                "InstanceType": instance["InstanceType"]
+                "InstanceType": instance["InstanceType"],
+                "LaunchTime": instance["LaunchTime"]
             })
 
     return instances
