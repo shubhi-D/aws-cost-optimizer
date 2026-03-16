@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 
-def get_metric_average(cw, instance_id, metric_name, statistic="Average"):
+def get_metric_datapoints(cw, instance_id, metric_name, statistic="Average"):
 
     end = datetime.utcnow()
     start = end - timedelta(minutes=15)
@@ -25,15 +25,25 @@ def get_metric_average(cw, instance_id, metric_name, statistic="Average"):
     if not datapoints:
         return None
 
-    avg_value = sum(d[statistic] for d in datapoints) / len(datapoints)
-
-    return avg_value
+    return datapoints
 
 
 def get_cpu_utilization(cw, instance_id):
-    return get_metric_average(
+    return get_metric_datapoints(
         cw,
         instance_id,
         "CPUUtilization",
         "Average"
     )
+
+
+def get_metric_average(cw, instance_id, metric_name, statistic="Average"):
+
+    datapoints = get_metric_datapoints(cw, instance_id, metric_name, statistic)
+
+    if datapoints is None:
+        return None
+
+    avg_value = sum(d[statistic] for d in datapoints) / len(datapoints)
+
+    return avg_value
