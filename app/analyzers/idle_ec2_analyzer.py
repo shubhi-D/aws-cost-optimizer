@@ -16,7 +16,7 @@ DISK_READ_THRESHOLD = 5
 DISK_WRITE_THRESHOLD = 5
 
 # Minimum age before evaluating instance
-MIN_INSTANCE_AGE_MINUTES = 2
+MIN_INSTANCE_AGE_MINUTES = 1
 
 
 def find_idle_instances():
